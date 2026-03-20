@@ -1,0 +1,2549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,
+initial-scale=1.0" />
+<title>Pawsport --- A digital passport for every grooming
+journey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com"
+crossorigin>
+<link
+href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+rel="stylesheet">
+<style>
+:root {
+\--bg: #f7f6f1;
+\--bg-soft: #fbfaf6;
+\--card: rgba(255,255,255,0.9);
+\--card-strong: #ffffff;
+\--line: #e7e4d8;
+\--primary: #6f7f5e;
+\--primary-dark: #54644a;
+\--primary-soft: #eaf0e5;
+\--mint: #edf6ef;
+\--cream: #f7f3ea;
+\--beige: #e7d7bf;
+\--pink: #f6dede;
+\--sage: #d7e3d2;
+\--text: #243026;
+\--text-soft: #607064;
+\--text-faint: #8d978f;
+\--good-bg: #e8f4ea;
+\--good-text: #2d6a39;
+\--monitor-bg: #fff4dd;
+\--monitor-text: #9b6a07;
+\--issue-bg: #fde7e7;
+\--issue-text: #9f3131;
+\--shadow-sm: 0 8px 20px rgba(53, 69, 58, 0.06);
+\--shadow-md: 0 18px 40px rgba(53, 69, 58, 0.10);
+\--shadow-lg: 0 30px 80px rgba(53, 69, 58, 0.14);
+\--radius-xs: 10px;
+\--radius-sm: 16px;
+\--radius-md: 22px;
+\--radius-lg: 28px;
+\--radius-xl: 36px;
+\--sidebar-w: 280px;
+\--topbar-h: 78px;
+\--report-max: 460px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+margin: 0;
+font-family: 'Inter', system-ui, sans-serif;
+background:
+radial-gradient(circle at top left, rgba(215,227,210,0.6), transparent
+28%),
+radial-gradient(circle at 90% 10%, rgba(246,222,222,0.45), transparent
+24%),
+linear-gradient(180deg, #faf8f2 0%, #f5f3ed 100%);
+color: var(\--text);
+}
+h1, h2, h3, h4, h5 {
+margin: 0;
+font-family: 'Manrope', sans-serif;
+letter-spacing: -0.02em;
+}
+p { margin: 0; }
+button, input, textarea, select { font: inherit; }
+.hidden { display: none !important; }
+.app { min-height: 100vh; }
+.topbar {
+position: sticky;
+top: 0;
+z-index: 40;
+height: var(\--topbar-h);
+backdrop-filter: blur(18px);
+background: rgba(250, 248, 242, 0.82);
+border-bottom: 1px solid rgba(231, 228, 216, 0.9);
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0 20px;
+}
+.brand {
+display: flex;
+align-items: center;
+gap: 14px;
+}
+.brand-mark {
+width: 46px;
+height: 46px;
+border-radius: 18px;
+background:
+radial-gradient(circle at 30% 30%, #f7f3ea, transparent 36%),
+linear-gradient(135deg, var(\--primary), #859574);
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), var(\--shadow-sm);
+display: grid;
+place-items: center;
+color: white;
+font-size: 20px;
+}
+.brand-copy h1 {
+font-size: 1.15rem;
+font-weight: 800;
+}
+.brand-copy p {
+font-size: 0.8rem;
+color: var(\--text-soft);
+margin-top: 2px;
+}
+.topbar-actions {
+display: flex;
+align-items: center;
+gap: 10px;
+flex-wrap: wrap;
+}
+.pill, .btn, .tab-btn, .chip {
+border: 0;
+border-radius: 999px;
+transition: 0.2s ease;
+}
+.pill {
+padding: 10px 14px;
+background: white;
+color: var(\--text-soft);
+border: 1px solid var(\--line);
+box-shadow: var(\--shadow-sm);
+font-size: 0.86rem;
+display: inline-flex;
+align-items: center;
+gap: 8px;
+}
+.pill.status-draft { background: #fffaf0; color: #8b6a1a; }
+.pill.status-ready { background: #edf6ef; color: #326345; }
+.pill.status-shared { background: #eef3fb; color: #365a8b; }
+.btn {
+cursor: pointer;
+padding: 12px 18px;
+font-weight: 600;
+border: 1px solid transparent;
+box-shadow: var(\--shadow-sm);
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn-primary {
+background: linear-gradient(135deg, var(\--primary), #819070);
+color: white;
+}
+.btn-secondary {
+background: white;
+color: var(\--text);
+border-color: var(\--line);
+}
+.btn-soft {
+background: var(\--primary-soft);
+color: var(\--primary-dark);
+}
+.btn-whatsapp {
+background: #e9f9ef;
+color: #18794f;
+}
+.layout {
+display: grid;
+grid-template-columns: var(\--sidebar-w) 1fr;
+min-height: calc(100vh - var(\--topbar-h));
+}
+.sidebar {
+border-right: 1px solid var(\--line);
+padding: 20px 16px 110px;
+background: rgba(251, 250, 246, 0.75);
+backdrop-filter: blur(14px);
+position: sticky;
+top: var(\--topbar-h);
+height: calc(100vh - var(\--topbar-h));
+overflow: auto;
+}
+.sidebar h3 {
+font-size: 0.95rem;
+margin-bottom: 14px;
+color: var(\--text-soft);
+padding-left: 6px;
+}
+.nav-list {
+display: grid;
+gap: 10px;
+}
+.tab-btn {
+text-align: left;
+padding: 14px 16px;
+background: transparent;
+color: var(\--text-soft);
+font-weight: 600;
+border: 1px solid transparent;
+}
+.tab-btn.active {
+background: white;
+color: var(\--text);
+border-color: var(\--line);
+box-shadow: var(\--shadow-sm);
+}
+.sidebar-card {
+margin-top: 18px;
+background: linear-gradient(180deg, rgba(255,255,255,0.95),
+rgba(247,243,234,0.95));
+border: 1px solid var(\--line);
+border-radius: var(\--radius-md);
+padding: 16px;
+box-shadow: var(\--shadow-sm);
+}
+.sidebar-card h4 {
+font-size: 0.95rem;
+margin-bottom: 6px;
+}
+.sidebar-card p {
+font-size: 0.86rem;
+color: var(\--text-soft);
+line-height: 1.55;
+}
+.history-list {
+display: grid;
+gap: 10px;
+margin-top: 12px;
+}
+.history-item {
+border: 1px solid var(\--line);
+background: white;
+border-radius: 18px;
+padding: 12px 14px;
+display: flex;
+justify-content: space-between;
+gap: 10px;
+color: var(\--text-soft);
+font-size: 0.88rem;
+cursor: pointer;
+transition: 0.2s ease;
+}
+.history-item:hover {
+transform: translateY(-1px);
+box-shadow: var(\--shadow-sm);
+}
+.history-item.active {
+border-color: rgba(111,127,94,0.35);
+background: var(\--primary-soft);
+color: var(\--primary-dark);
+}
+.history-item small {
+display: block;
+color: var(\--text-faint);
+margin-top: 4px;
+}
+.content { padding: 24px 24px 110px; }
+.mode-switch {
+display: inline-flex;
+gap: 8px;
+padding: 6px;
+border-radius: 999px;
+background: rgba(255,255,255,0.9);
+border: 1px solid var(\--line);
+box-shadow: var(\--shadow-sm);
+margin-bottom: 18px;
+}
+.mode-btn {
+border: 0;
+background: transparent;
+padding: 10px 16px;
+border-radius: 999px;
+font-weight: 700;
+cursor: pointer;
+color: var(\--text-soft);
+}
+.mode-btn.active {
+background: var(\--primary);
+color: white;
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+}
+.workspace {
+display: grid;
+grid-template-columns: minmax(600px, 1fr) 420px;
+gap: 24px;
+align-items: start;
+}
+.dashboard-pane { display: grid; gap: 18px; }
+.section-card {
+background: linear-gradient(180deg, rgba(255,255,255,0.98),
+rgba(251,250,246,0.98));
+border: 1px solid var(\--line);
+border-radius: var(\--radius-lg);
+box-shadow: var(\--shadow-md);
+overflow: hidden;
+}
+.section-head {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+gap: 16px;
+padding: 20px 22px 16px;
+border-bottom: 1px solid rgba(231,228,216,0.7);
+background:
+radial-gradient(circle at right top, rgba(215,227,210,0.35), transparent
+30%),
+linear-gradient(180deg, rgba(247,243,234,0.65), rgba(255,255,255,0));
+}
+.section-head h2 {
+font-size: 1.06rem;
+font-weight: 800;
+}
+.section-head p {
+margin-top: 5px;
+color: var(\--text-soft);
+font-size: 0.9rem;
+}
+.section-body {
+padding: 20px 22px 22px;
+display: grid;
+gap: 18px;
+}
+.grid { display: grid; gap: 14px; }
+.grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.field { display: grid; gap: 8px; }
+.field label {
+font-size: 0.84rem;
+font-weight: 700;
+color: var(\--text-soft);
+}
+.input, .textarea, .select {
+width: 100%;
+background: white;
+border: 1px solid var(\--line);
+border-radius: 18px;
+padding: 14px 15px;
+color: var(\--text);
+outline: none;
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
+}
+.input:focus, .textarea:focus, .select:focus {
+border-color: rgba(111,127,94,0.55);
+box-shadow: 0 0 0 4px rgba(111,127,94,0.12);
+}
+.textarea {
+resize: vertical;
+min-height: 96px;
+}
+.chips {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+}
+.chip {
+padding: 10px 14px;
+background: #fff;
+border: 1px solid var(\--line);
+color: var(\--text-soft);
+cursor: pointer;
+font-weight: 600;
+box-shadow: var(\--shadow-sm);
+}
+.chip.active {
+background: var(\--primary-soft);
+color: var(\--primary-dark);
+border-color: rgba(111,127,94,0.25);
+}
+.upload-zone {
+border: 1.5px dashed #cfd6cb;
+border-radius: 24px;
+padding: 18px;
+background:
+radial-gradient(circle at top left, rgba(215,227,210,0.28), transparent
+28%),
+rgba(255,255,255,0.7);
+display: grid;
+gap: 12px;
+min-height: 144px;
+align-content: center;
+text-align: center;
+color: var(\--text-soft);
+}
+.upload-zone strong {
+color: var(\--text);
+font-family: 'Manrope', sans-serif;
+}
+.upload-preview {
+width: 100%;
+aspect-ratio: 1.2 / 1;
+object-fit: cover;
+border-radius: 20px;
+border: 1px solid var(\--line);
+display: none;
+}
+.inline-toggle {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 14px;
+padding: 14px 16px;
+border: 1px solid var(\--line);
+border-radius: 18px;
+background: rgba(255,255,255,0.75);
+}
+.switch {
+position: relative;
+width: 54px;
+height: 32px;
+background: #e5e5df;
+border-radius: 999px;
+cursor: pointer;
+transition: 0.2s ease;
+flex-shrink: 0;
+}
+.switch::after {
+content: "";
+position: absolute;
+top: 4px;
+left: 4px;
+width: 24px;
+height: 24px;
+border-radius: 50%;
+background: white;
+box-shadow: var(\--shadow-sm);
+transition: 0.2s ease;
+}
+.switch.active { background: #cfe0c8; }
+.switch.active::after { left: 26px; }
+.condition-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 14px;
+}
+.condition-item {
+border: 1px solid var(\--line);
+border-radius: 22px;
+padding: 14px;
+background: rgba(255,255,255,0.82);
+display: grid;
+gap: 10px;
+}
+.condition-title {
+font-weight: 800;
+font-family: 'Manrope', sans-serif;
+}
+.mini-row {
+display: grid;
+grid-template-columns: 120px 1fr;
+gap: 10px;
+}
+.helper {
+font-size: 0.8rem;
+color: var(\--text-faint);
+}
+.preview-shell {
+position: sticky;
+top: calc(var(\--topbar-h) + 18px);
+align-self: start;
+}
+.preview-panel {
+background: rgba(255,255,255,0.55);
+border: 1px solid var(\--line);
+border-radius: 34px;
+box-shadow: var(\--shadow-lg);
+padding: 12px;
+backdrop-filter: blur(12px);
+}
+.phone-frame {
+width: min(100%, var(\--report-max));
+margin: 0 auto;
+background: #f7f4ee;
+border-radius: 30px;
+border: 1px solid rgba(111,127,94,0.14);
+overflow: hidden;
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), var(\--shadow-md);
+min-height: 740px;
+}
+.preview-top {
+padding: 12px 12px 0;
+display: flex;
+justify-content: space-between;
+align-items: center;
+color: var(\--text-faint);
+font-size: 0.8rem;
+}
+.report {
+position: relative;
+overflow: hidden;
+background:
+radial-gradient(circle at 10% 0%, rgba(246,222,222,0.35), transparent
+18%),
+radial-gradient(circle at 90% 10%, rgba(215,227,210,0.45), transparent
+20%),
+linear-gradient(180deg, #fbfaf6 0%, #f7f4ee 100%);
+}
+.report-deco {
+position: absolute;
+border-radius: 999px;
+pointer-events: none;
+opacity: 0.75;
+filter: blur(0.2px);
+animation: floatY 6s ease-in-out infinite;
+}
+.deco-1 {
+top: 70px;
+right: 18px;
+width: 68px;
+height: 68px;
+background: rgba(246,222,222,0.65);
+}
+.deco-2 {
+top: 220px;
+left: -18px;
+width: 86px;
+height: 86px;
+background: rgba(215,227,210,0.55);
+animation-delay: 0.6s;
+}
+.deco-3 {
+bottom: 260px;
+right: -12px;
+width: 74px;
+height: 74px;
+background: rgba(231,215,191,0.55);
+animation-delay: 1.1s;
+}
+@keyframes floatY {
+0%, 100% { transform: translateY(0px); }
+50% { transform: translateY(-10px); }
+}
+.report-section { padding: 18px 18px 0; }
+.hero-card {
+margin: 14px;
+border-radius: 32px;
+overflow: hidden;
+position: relative;
+box-shadow: var(\--shadow-lg);
+background:
+radial-gradient(circle at 20% 20%, rgba(255,255,255,0.14), transparent
+25%),
+linear-gradient(160deg, #5f7152 0%, #7f9270 52%, #95a688 100%);
+color: white;
+}
+.hero-card::after {
+content: "";
+position: absolute;
+inset: 0;
+background:
+radial-gradient(circle at 85% 15%, rgba(246,222,222,0.28), transparent
+25%),
+radial-gradient(circle at 10% 80%, rgba(247,243,234,0.15), transparent
+35%);
+pointer-events: none;
+}
+.hero-top {
+display: flex;
+justify-content: space-between;
+gap: 12px;
+padding: 18px 18px 0;
+position: relative;
+z-index: 1;
+}
+.hero-logo {
+font-size: 0.82rem;
+color: rgba(255,255,255,0.78);
+font-weight: 700;
+letter-spacing: 0.02em;
+}
+.hero-chip {
+background: rgba(255,255,255,0.14);
+border: 1px solid rgba(255,255,255,0.16);
+color: rgba(255,255,255,0.9);
+border-radius: 999px;
+padding: 8px 12px;
+font-size: 0.75rem;
+backdrop-filter: blur(10px);
+}
+.hero-body {
+padding: 16px 18px 22px;
+position: relative;
+z-index: 1;
+}
+.hero-photo-wrap {
+display: flex;
+align-items: flex-end;
+gap: 14px;
+}
+.hero-photo {
+width: 94px;
+height: 94px;
+border-radius: 28px;
+overflow: hidden;
+background: rgba(255,255,255,0.16);
+border: 1px solid rgba(255,255,255,0.18);
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.28);
+flex-shrink: 0;
+}
+.hero-photo img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+.hero-meta { flex: 1; }
+.hero-kicker {
+font-size: 0.82rem;
+color: rgba(255,255,255,0.82);
+margin-bottom: 6px;
+}
+.hero-name {
+font-size: 2rem;
+font-weight: 800;
+line-height: 1;
+margin-bottom: 8px;
+}
+.hero-title {
+font-size: 0.94rem;
+color: rgba(255,255,255,0.86);
+}
+.hero-detail-row {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin-top: 14px;
+}
+.hero-detail {
+padding: 8px 12px;
+border-radius: 999px;
+background: rgba(255,255,255,0.12);
+border: 1px solid rgba(255,255,255,0.16);
+font-size: 0.76rem;
+color: rgba(255,255,255,0.94);
+}
+.scroll-cue {
+display: flex;
+align-items: center;
+gap: 8px;
+justify-content: center;
+font-size: 0.78rem;
+color: var(\--text-faint);
+padding: 6px 0 2px;
+animation: bob 1.8s ease-in-out infinite;
+}
+@keyframes bob {
+0%, 100% { transform: translateY(0); opacity: 0.75; }
+50% { transform: translateY(4px); opacity: 1; }
+}
+.passport-card {
+background: rgba(255,255,255,0.88);
+border: 1px solid var(\--line);
+border-radius: 28px;
+box-shadow: var(\--shadow-md);
+overflow: hidden;
+}
+.passport-head { padding: 18px 18px 10px; }
+.passport-head h3 {
+font-size: 1.18rem;
+font-weight: 800;
+}
+.passport-head p {
+margin-top: 4px;
+color: var(\--text-soft);
+font-size: 0.9rem;
+}
+.passport-body { padding: 0 18px 18px; }
+.package-card {
+background: linear-gradient(135deg, var(\--cream), #fffdfa);
+border: 1px solid #eadfcf;
+border-radius: 24px;
+padding: 16px;
+box-shadow: var(\--shadow-sm);
+display: grid;
+gap: 12px;
+}
+.package-name {
+font-family: 'Manrope', sans-serif;
+font-weight: 800;
+font-size: 1.06rem;
+}
+.service-chips, .behavior-chips {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+}
+.service-chip, .behavior-chip {
+padding: 8px 12px;
+border-radius: 999px;
+font-size: 0.78rem;
+font-weight: 700;
+}
+.service-chip {
+background: #f4efe7;
+color: #6e5b3e;
+border: 1px solid #eadfcf;
+}
+.behavior-chip {
+background: var(\--mint);
+color: #48624f;
+border: 1px solid #dbe9dd;
+}
+.groomer-tag {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+width: fit-content;
+padding: 8px 12px;
+border-radius: 999px;
+background: var(\--primary-soft);
+color: var(\--primary-dark);
+font-size: 0.8rem;
+font-weight: 700;
+}
+.speech-bubble {
+position: relative;
+background: linear-gradient(180deg, #fff, #faf9f5);
+border: 1px solid var(\--line);
+border-radius: 24px;
+padding: 16px;
+color: var(\--text-soft);
+line-height: 1.65;
+box-shadow: var(\--shadow-sm);
+}
+.speech-bubble::after {
+content: "";
+position: absolute;
+left: 22px;
+bottom: -10px;
+width: 18px;
+height: 18px;
+background: #fff;
+border-right: 1px solid var(\--line);
+border-bottom: 1px solid var(\--line);
+transform: rotate(45deg);
+}
+.condition-list {
+display: grid;
+gap: 10px;
+}
+.condition-row {
+display: grid;
+grid-template-columns: 72px 110px 1fr;
+gap: 10px;
+align-items: start;
+padding: 12px;
+border-radius: 18px;
+background: rgba(251,250,246,0.92);
+border: 1px solid var(\--line);
+}
+.condition-row strong {
+font-size: 0.86rem;
+font-family: 'Manrope', sans-serif;
+}
+.badge {
+width: fit-content;
+padding: 7px 10px;
+border-radius: 999px;
+font-size: 0.72rem;
+font-weight: 800;
+}
+.badge.good {
+background: var(\--good-bg);
+color: var(\--good-text);
+}
+.badge.monitor {
+background: var(\--monitor-bg);
+color: var(\--monitor-text);
+}
+.badge.issue {
+background: var(\--issue-bg);
+color: var(\--issue-text);
+}
+.gallery-grid { display: grid; gap: 12px; }
+.gallery-compare {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 12px;
+}
+.gallery-card {
+border: 1px solid var(\--line);
+border-radius: 24px;
+overflow: hidden;
+background: white;
+box-shadow: var(\--shadow-sm);
+}
+.gallery-card img {
+width: 100%;
+height: 180px;
+object-fit: cover;
+display: block;
+background: #edeae2;
+}
+.gallery-label {
+padding: 12px 14px;
+font-size: 0.85rem;
+font-weight: 800;
+color: var(\--text-soft);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.next-appointment { display: grid; gap: 14px; }
+.appointment-box {
+border-radius: 24px;
+border: 1px solid var(\--line);
+background: linear-gradient(180deg, #fff, #faf8f3);
+padding: 16px;
+box-shadow: var(\--shadow-sm);
+}
+.appointment-main {
+font-family: 'Manrope', sans-serif;
+font-size: 1rem;
+font-weight: 800;
+margin-bottom: 6px;
+}
+.appointment-sub {
+color: var(\--text-soft);
+font-size: 0.9rem;
+}
+.cta-row {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 12px;
+}
+.cta {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+text-decoration: none;
+padding: 12px 16px;
+border-radius: 999px;
+font-weight: 800;
+font-size: 0.85rem;
+border: 1px solid transparent;
+box-shadow: var(\--shadow-sm);
+}
+.cta.primary {
+background: var(\--primary);
+color: white;
+}
+.cta.secondary {
+background: white;
+color: var(\--text);
+border-color: var(\--line);
+}
+.stars {
+display: flex;
+gap: 8px;
+margin-top: 14px;
+flex-wrap: wrap;
+}
+.star {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+display: grid;
+place-items: center;
+background: white;
+border: 1px solid var(\--line);
+box-shadow: var(\--shadow-sm);
+color: #d5b257;
+font-size: 18px;
+}
+.footer-card {
+margin: 18px 18px 24px;
+background: rgba(255,255,255,0.88);
+border: 1px solid var(\--line);
+border-radius: 24px;
+padding: 16px;
+box-shadow: var(\--shadow-sm);
+}
+.footer-meta {
+display: flex;
+justify-content: space-between;
+gap: 12px;
+flex-wrap: wrap;
+color: var(\--text-soft);
+font-size: 0.84rem;
+line-height: 1.6;
+}
+.stamp {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+margin-top: 12px;
+padding: 8px 12px;
+border-radius: 999px;
+background: #f4efe7;
+color: #6e5b3e;
+border: 1px solid #eadfcf;
+font-size: 0.78rem;
+font-weight: 800;
+}
+.qr-box {
+width: 76px;
+height: 76px;
+border-radius: 16px;
+border: 1px dashed #cfc8b8;
+background:
+linear-gradient(90deg, rgba(111,127,94,0.06) 50%, transparent 50%),
+linear-gradient(rgba(111,127,94,0.06) 50%, transparent 50%);
+background-size: 12px 12px;
+flex-shrink: 0;
+}
+.reveal {
+opacity: 0;
+transform: translateY(14px);
+transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.show {
+opacity: 1;
+transform: translateY(0);
+}
+.actionbar {
+position: fixed;
+bottom: 0;
+left: 0;
+right: 0;
+z-index: 60;
+padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+background: rgba(250,248,242,0.78);
+backdrop-filter: blur(18px);
+border-top: 1px solid rgba(231,228,216,0.92);
+}
+.actionbar-inner {
+max-width: 1460px;
+margin: 0 auto;
+background: rgba(255,255,255,0.9);
+border: 1px solid var(\--line);
+border-radius: 999px;
+box-shadow: var(\--shadow-lg);
+padding: 10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 10px;
+flex-wrap: wrap;
+}
+.action-left, .action-right {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+align-items: center;
+}
+.link-box {
+padding: 10px 14px;
+border-radius: 999px;
+background: #f7f6f1;
+border: 1px solid var(\--line);
+color: var(\--text-soft);
+font-size: 0.85rem;
+min-width: 280px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+.toast {
+position: fixed;
+right: 18px;
+top: 94px;
+z-index: 80;
+background: rgba(41,57,44,0.96);
+color: white;
+padding: 14px 16px;
+border-radius: 18px;
+box-shadow: var(\--shadow-lg);
+font-size: 0.9rem;
+opacity: 0;
+pointer-events: none;
+transform: translateY(-8px);
+transition: 0.25s ease;
+}
+.toast.show {
+opacity: 1;
+pointer-events: auto;
+transform: translateY(0);
+}
+@media (max-width: 1160px) {
+.workspace { grid-template-columns: 1fr; }
+.preview-shell { position: static; }
+}
+@media (max-width: 980px) {
+.layout { grid-template-columns: 1fr; }
+.sidebar {
+position: static;
+height: auto;
+border-right: 0;
+border-bottom: 1px solid var(\--line);
+padding-bottom: 18px;
+}
+.nav-list {
+grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+}
+@media (max-width: 720px) {
+.content { padding: 18px 14px 110px; }
+.grid.cols-2, .grid.cols-3, .condition-grid, .gallery-compare, .mini-row
+{
+grid-template-columns: 1fr;
+}
+.nav-list { grid-template-columns: 1fr; }
+.topbar {
+height: auto;
+padding: 12px 14px;
+align-items: flex-start;
+gap: 12px;
+flex-direction: column;
+}
+.topbar-actions { width: 100%; }
+.actionbar-inner {
+border-radius: 28px;
+align-items: stretch;
+}
+.action-left, .action-right { width: 100%; }
+.link-box {
+min-width: 0;
+width: 100%;
+}
+.phone-frame {
+width: 100%;
+border-radius: 24px;
+}
+.hero-name { font-size: 1.72rem; }
+.condition-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+<div class="brand">
+<div class="brand-mark">🐾</div>
+<div class="brand-copy">
+<h1>Pawsport</h1>
+<p>A digital passport for every grooming journey</p>
+</div>
+</div>
+<div class="topbar-actions">
+<div id="statusPill" class="pill status-draft">● Draft</div>
+<button class="btn btn-secondary" id="duplicateBtn">Duplicate Last
+Session</button>
+<button class="btn btn-soft" id="reportSentBtn">Report
+Sent</button>
+</div>
+</header>
+<div class="layout">
+<aside class="sidebar">
+<h3>Dashboard sections</h3>
+<div class="nav-list">
+<button class="tab-btn active" data-jump="#petProfile">Pet
+Profile</button>
+<button class="tab-btn" data-jump="#groomingDetails">Grooming
+Details</button>
+<button class="tab-btn"
+data-jump="#temperament">Temperament</button>
+<button class="tab-btn" data-jump="#conditionReport">Condition
+Report</button>
+<button class="tab-btn" data-jump="#photoGallery">Photo
+Gallery</button>
+<button class="tab-btn" data-jump="#nextAppointment">Next
+Appointment</button>
+<button class="tab-btn" data-jump="#customerMessage">Customer
+Message</button>
+</div>
+<div class="sidebar-card">
+<h4>Visit history</h4>
+<p>
+Click any previous session to load that historical Pawsport and preview
+how it looked on that visit date.
+</p>
+<div class="history-list" id="visitHistoryList"></div>
+</div>
+<div class="sidebar-card">
+<h4>Sharing experience</h4>
+<p>
+Generate a polished, shareable Pawsport link for pet owners.
+Public view hides all admin controls and feels like a standalone premium
+webpage.
+</p>
+</div>
+</aside>
+<main class="content">
+<div class="mode-switch">
+<button class="mode-btn active" id="editModeBtn">Edit
+Mode</button>
+<button class="mode-btn" id="previewModeBtn">Preview
+Mode</button>
+</div>
+<div class="workspace">
+<section class="dashboard-pane" id="dashboardPane">
+<div class="section-card" id="petProfile">
+<div class="section-head">
+<div>
+<h2>1. Pet Profile</h2>
+<p>Core details for the Pawsport cover and customer record.</p>
+</div>
+</div>
+<div class="section-body">
+<div class="grid cols-2">
+<div class="field">
+<label for="petName">Pet Name</label>
+<input class="input" id="petName" value="Mochi" />
+</div>
+<div class="field">
+<label for="breed">Breed</label>
+<input class="input" id="breed" value="Mini Goldendoodle" />
+</div>
+</div>
+<div class="grid cols-3">
+<div class="field">
+<label for="gender">Gender</label>
+<select class="select" id="gender">
+<option selected>Female</option>
+<option>Male</option>
+</select>
+</div>
+<div class="field">
+<label for="age">Age</label>
+<input class="input" id="age" value="3 years old" />
+</div>
+<div class="field">
+<label for="weight">Weight</label>
+<input class="input" id="weight" value="8.2 kg" />
+</div>
+</div>
+<div class="grid cols-2">
+<div class="field">
+<label for="ownerName">Owner Name</label>
+<input class="input" id="ownerName" value="Melissa Tan" />
+</div>
+<div class="field">
+<label for="ownerContact">Owner Contact</label>
+<input class="input" id="ownerContact" value="+65 9123 4567" />
+</div>
+</div>
+<div class="grid cols-2">
+<div class="field">
+<label for="ownerEmail">Owner Email</label>
+<input class="input" id="ownerEmail" value="melissa@example.com"
+/>
+</div>
+<div class="field">
+<label for="branch">Branch / Outlet</label>
+<input class="input" id="branch" value="Pawsport --- Tanjong
+Pagar" />
+</div>
+</div>
+<div class="grid cols-2">
+<div class="field">
+<label for="groomerName">Groomer Name</label>
+<input class="input" id="groomerName" value="Chloe" />
+</div>
+<div class="field">
+<label for="dateTime">Date & Time</label>
+<input class="input" id="dateTime" type="datetime-local"
+value="2026-03-20T10:30" />
+</div>
+</div>
+<div class="field">
+<label>Pet Photo Upload</label>
+<div class="upload-zone">
+<img id="petPhotoPreview" class="upload-preview" alt="Pet photo
+preview">
+<strong>Upload pet portrait</strong>
+<span>Best for the Pawsport cover</span>
+<input type="file" id="petPhoto" accept="image/*">
+</div>
+</div>
+</div>
+</div>
+<div class="section-card" id="groomingDetails">
+<div class="section-head">
+<div>
+<h2>2. Grooming Details</h2>
+<p>Session package, services, products, and special requests.</p>
+</div>
+</div>
+<div class="section-body">
+<div class="grid cols-2">
+<div class="field">
+<label for="packageName">Grooming Package Name</label>
+<input class="input" id="packageName" value="Full Teddy Spa
+Groom" />
+</div>
+<div class="field">
+<label for="coatType">Coat Type</label>
+<input class="input" id="coatType" value="Soft curly coat" />
+</div>
+</div>
+<div class="grid cols-3">
+<div class="field">
+<label for="groomingStyle">Grooming Style</label>
+<input class="input" id="groomingStyle" value="Teddy trim" />
+</div>
+<div class="field">
+<label for="furLength">Fur Length Result</label>
+<input class="input" id="furLength" value="Short face, fluffy
+legs" />
+</div>
+<div class="field">
+<label for="duration">Duration</label>
+<input class="input" id="duration" value="2 hr 15 min" />
+</div>
+</div>
+<div class="field">
+<label>Services Performed</label>
+<div class="chips" id="serviceChips">
+<button class="chip active">Bath</button>
+<button class="chip active">Full Groom</button>
+<button class="chip active">Nail Trim</button>
+<button class="chip active">Ear Cleaning</button>
+<button class="chip">Dematting</button>
+<button class="chip">Deshedding</button>
+<button class="chip">Toothbrushing</button>
+<button class="chip">Paw Pad Trim</button>
+<button class="chip">Sanitary Trim</button>
+</div>
+</div>
+<div class="grid cols-2">
+<div class="field">
+<label for="addons">Add-ons</label>
+<input class="input" id="addons" value="Blueberry facial, paw
+balm" />
+</div>
+<div class="field">
+<label for="productsUsed">Products Used</label>
+<input class="input" id="productsUsed" value="Sensitive oat
+shampoo, detangling mist" />
+</div>
+</div>
+<div class="field">
+<label for="specialNotes">Notes / Special Requests</label>
+<textarea class="textarea" id="specialNotes">Owner requested a
+softer teddy face and shorter hygiene trim for easier upkeep at
+home.</textarea>
+</div>
+</div>
+</div>
+<div class="section-card" id="temperament">
+<div class="section-head">
+<div>
+<h2>3. Temperament</h2>
+<p>Capture the pet's mood, cooperation, and overall grooming
+behavior.</p>
+</div>
+</div>
+<div class="section-body">
+<div class="field">
+<label>Behavior Tags</label>
+<div class="chips" id="behaviorChips">
+<button class="chip active">Calm</button>
+<button class="chip active">Friendly</button>
+<button class="chip active">Cooperative</button>
+<button class="chip">Playful</button>
+<button class="chip">Nervous</button>
+<button class="chip">Grumpy</button>
+<button class="chip">Vocal</button>
+<button class="chip">Shy</button>
+</div>
+</div>
+<div class="field">
+<label for="groomerNotes">Groomer Notes</label>
+<textarea class="textarea" id="groomerNotes">Mochi was very sweet
+today and settled in quickly. She stood nicely for scissoring and was
+especially comfortable during brushing and blow drying with gentle
+reassurance.</textarea>
+</div>
+<div class="grid cols-3">
+<div class="field">
+<label for="handlingDifficulty">Handling Difficulty</label>
+<select class="select" id="handlingDifficulty">
+<option selected>Easy</option>
+<option>Moderate</option>
+<option>Difficult</option>
+</select>
+</div>
+<div class="field">
+<label for="dryingTolerance">Drying Tolerance</label>
+<input class="input" id="dryingTolerance" value="Good" />
+</div>
+<div class="field">
+<label for="clipperTolerance">Clipper Tolerance</label>
+<input class="input" id="clipperTolerance" value="Good" />
+</div>
+</div>
+</div>
+</div>
+<div class="section-card" id="conditionReport">
+<div class="section-head">
+<div>
+<h2>4. Condition Report</h2>
+<p>Quick status dropdown plus short notes for each key area.</p>
+</div>
+</div>
+<div class="section-body">
+<div class="condition-grid">
+<div class="condition-item">
+<div class="condition-title">Ear Condition</div>
+<div class="mini-row">
+<select class="select condition-status" data-key="ear">
+<option selected>Good</option>
+<option>Monitor</option>
+<option>Issue observed</option>
+</select>
+<input class="input condition-note" data-key="ear" value="Clean
+with mild wax build-up removed." />
+</div>
+</div>
+<div class="condition-item">
+<div class="condition-title">Eye Condition</div>
+<div class="mini-row">
+<select class="select condition-status" data-key="eye">
+<option selected>Monitor</option>
+<option>Good</option>
+<option>Issue observed</option>
+</select>
+<input class="input condition-note" data-key="eye" value="Slight
+tear staining around inner corners." />
+</div>
+</div>
+<div class="condition-item">
+<div class="condition-title">Skin Condition</div>
+<div class="mini-row">
+<select class="select condition-status" data-key="skin">
+<option selected>Good</option>
+<option>Monitor</option>
+<option>Issue observed</option>
+</select>
+<input class="input condition-note" data-key="skin" value="Skin
+looked healthy and comfortable." />
+</div>
+</div>
+<div class="condition-item">
+<div class="condition-title">Coat Condition</div>
+<div class="mini-row">
+<select class="select condition-status" data-key="coat">
+<option selected>Monitor</option>
+<option>Good</option>
+<option>Issue observed</option>
+</select>
+<input class="input condition-note" data-key="coat" value="A few
+light tangles on legs and chest." />
+</div>
+</div>
+<div class="condition-item">
+<div class="condition-title">Nail Condition</div>
+<div class="mini-row">
+<select class="select condition-status" data-key="nails">
+<option selected>Good</option>
+<option>Monitor</option>
+<option>Issue observed</option>
+</select>
+<input class="input condition-note" data-key="nails"
+value="Trimmed and filed neatly." />
+</div>
+</div>
+<div class="condition-item">
+<div class="condition-title">Teeth / Breath</div>
+<div class="mini-row">
+<select class="select condition-status" data-key="teeth">
+<option selected>Monitor</option>
+<option>Good</option>
+<option>Issue observed</option>
+</select>
+<input class="input condition-note" data-key="teeth" value="Mild
+tartar visible; routine brushing recommended." />
+</div>
+</div>
+<div class="condition-item">
+<div class="condition-title">Flea / Tick</div>
+<div class="mini-row">
+<select class="select condition-status" data-key="flea">
+<option selected>Good</option>
+<option>Monitor</option>
+<option>Issue observed</option>
+</select>
+<input class="input condition-note" data-key="flea" value="No
+visible fleas or ticks observed." />
+</div>
+</div>
+<div class="condition-item">
+<div class="condition-title">Additional Remarks</div>
+<div class="mini-row">
+<select class="select condition-status" data-key="remarks">
+<option selected>Good</option>
+<option>Monitor</option>
+<option>Issue observed</option>
+</select>
+<input class="input condition-note" data-key="remarks"
+value="Overall session went smoothly." />
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section-card" id="photoGallery">
+<div class="section-head">
+<div>
+<h2>5. Photo Gallery</h2>
+<p>Before and after photos plus optional extra images for the
+report.</p>
+</div>
+</div>
+<div class="section-body">
+<div class="grid cols-2">
+<div class="field">
+<label>Before Photo Upload</label>
+<div class="upload-zone">
+<img id="beforePreview" class="upload-preview" alt="Before
+preview">
+<strong>Upload before photo</strong>
+<span>Used in the comparison gallery</span>
+<input type="file" id="beforePhoto" accept="image/*">
+</div>
+</div>
+<div class="field">
+<label>After Photo Upload</label>
+<div class="upload-zone">
+<img id="afterPreview" class="upload-preview" alt="After
+preview">
+<strong>Upload after photo</strong>
+<span>Used in the comparison gallery</span>
+<input type="file" id="afterPhoto" accept="image/*">
+</div>
+</div>
+</div>
+<div class="field">
+<label>Optional Extra Image</label>
+<div class="upload-zone">
+<img id="extraPreview" class="upload-preview" alt="Extra
+preview">
+<strong>Upload an extra image</strong>
+<span>Optional scrapbook-style extra moment</span>
+<input type="file" id="extraPhoto" accept="image/*">
+</div>
+</div>
+<div class="inline-toggle">
+<div>
+<strong>Include extra gallery image</strong>
+<div class="helper">Toggle this for the customer-facing
+report</div>
+</div>
+<div class="switch active" id="extraToggle"></div>
+</div>
+</div>
+</div>
+<div class="section-card" id="nextAppointment">
+<div class="section-head">
+<div>
+<h2>6. Next Appointment</h2>
+<p>Booking status, suggested timing, and follow-up note.</p>
+</div>
+</div>
+<div class="section-body">
+<div class="grid cols-2">
+<div class="field">
+<label for="apptStatus">Appointment Status</label>
+<select class="select" id="apptStatus">
+<option selected>Booked</option>
+<option>Not booked</option>
+</select>
+</div>
+<div class="field">
+<label for="apptDate">Next Appointment Date & Time</label>
+<input class="input" id="apptDate" type="datetime-local"
+value="2026-04-17T11:00" />
+</div>
+</div>
+<div class="grid cols-2">
+<div class="field">
+<label for="frequency">Recommended Frequency</label>
+<select class="select" id="frequency">
+<option>4 weeks</option>
+<option selected>6 weeks</option>
+<option>8 weeks</option>
+<option>Custom</option>
+</select>
+</div>
+<div class="field">
+<label for="rebookNote">Rebooking Note</label>
+<input class="input" id="rebookNote" value="To maintain her teddy
+face and prevent tangling." />
+</div>
+</div>
+</div>
+</div>
+<div class="section-card" id="customerMessage">
+<div class="section-head">
+<div>
+<h2>7. Customer Message</h2>
+<p>Warm thank-you note and feedback CTA for the pet owner.</p>
+</div>
+</div>
+<div class="section-body">
+<div class="field">
+<label for="thankYouMessage">Thank-you Message</label>
+<textarea class="textarea" id="thankYouMessage">Thank you for
+trusting us with Mochi today. She was an absolute sweetheart and we
+loved spending time with her. We hope you enjoy her fresh new look and
+cannot wait to see her again soon.</textarea>
+</div>
+<div class="inline-toggle">
+<div>
+<strong>Feedback request</strong>
+<div class="helper">Show rating and feedback prompt in the
+report</div>
+</div>
+<div class="switch active" id="feedbackToggle"></div>
+</div>
+<div class="field">
+<label for="customNote">Custom Note</label>
+<textarea class="textarea" id="customNote">Mochi would benefit
+from regular brushing at home around the legs and chest to keep her coat
+soft and knot-free between visits.</textarea>
+</div>
+</div>
+</div>
+</section>
+<aside class="preview-shell" id="previewShell">
+<div class="preview-panel">
+<div class="preview-top">
+<span>Live Preview</span>
+<span id="previewContextLabel">Current Draft</span>
+</div>
+<div class="phone-frame">
+<div class="report" id="reportView">
+<div class="report-deco deco-1"></div>
+<div class="report-deco deco-2"></div>
+<div class="report-deco deco-3"></div>
+<section class="hero-card reveal show">
+<div class="hero-top">
+<div class="hero-logo">Pawsport</div>
+<div class="hero-chip">🐾 Grooming Report</div>
+</div>
+<div class="hero-body">
+<div class="hero-photo-wrap">
+<div class="hero-photo">
+<img id="reportPetPhoto"
+src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=700&q=80"
+alt="Dog photo">
+</div>
+<div class="hero-meta">
+<div class="hero-kicker" id="reportDateLine">Mar 20, 2026 · 10:30
+AM</div>
+<div class="hero-name" id="reportPetName">Mochi</div>
+<div class="hero-title">A digital passport for every grooming
+journey</div>
+</div>
+</div>
+<div class="hero-detail-row">
+<div class="hero-detail" id="reportBreed">Mini
+Goldendoodle</div>
+<div class="hero-detail" id="reportGroomer">by Chloe</div>
+<div class="hero-detail" id="reportBranch">Pawsport --- Tanjong
+Pagar</div>
+</div>
+</div>
+</section>
+<div class="scroll-cue">↓ Scroll through today's Pawsport</div>
+<section class="report-section reveal">
+<div class="passport-card">
+<div class="passport-head">
+<h3>Today we had</h3>
+<p>Your pet's grooming session at a glance.</p>
+</div>
+<div class="passport-body">
+<div class="package-card">
+<div class="package-name" id="reportPackage">Full Teddy Spa
+Groom</div>
+<div class="service-chips" id="reportServices"></div>
+<div class="groomer-tag" id="reportByTag">by Chloe</div>
+</div>
+</div>
+</div>
+</section>
+<section class="report-section reveal">
+<div class="passport-card">
+<div class="passport-head">
+<h3>Absolutely pawfect</h3>
+<p>A little note on today's temperament and experience.</p>
+</div>
+<div class="passport-body">
+<div class="behavior-chips" id="reportBehavior"></div>
+<div style="height:12px"></div>
+<div class="speech-bubble" id="reportGroomerNote">
+Mochi was very sweet today and settled in quickly.
+</div>
+</div>
+</div>
+</section>
+<section class="report-section reveal">
+<div class="passport-card">
+<div class="passport-head">
+<h3>Condition report</h3>
+<p>Quick observations from today's session.</p>
+</div>
+<div class="passport-body">
+<div class="condition-list" id="reportConditions"></div>
+</div>
+</div>
+</section>
+<section class="report-section reveal">
+<div class="passport-card">
+<div class="passport-head">
+<h3>Before & after</h3>
+<p>A little transformation moment from today.</p>
+</div>
+<div class="passport-body">
+<div class="gallery-grid">
+<div class="gallery-compare">
+<div class="gallery-card">
+<img id="reportBeforeImg"
+src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=700&q=80"
+alt="Before">
+<div class="gallery-label">
+<span>Before</span>
+<span>✦</span>
+</div>
+</div>
+<div class="gallery-card">
+<img id="reportAfterImg"
+src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=700&q=80"
+alt="After">
+<div class="gallery-label">
+<span>After</span>
+<span>✦</span>
+</div>
+</div>
+</div>
+<div class="gallery-card" id="extraGalleryCard">
+<img id="reportExtraImg"
+src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80"
+alt="Extra">
+<div class="gallery-label">
+<span>Extra moment</span>
+<span>Scrapbook ✿</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="report-section reveal">
+<div class="passport-card">
+<div class="passport-head">
+<h3>Your next appointment</h3>
+<p>Recommended timing for your pet's next pamper session.</p>
+</div>
+<div class="passport-body">
+<div class="next-appointment">
+<div class="appointment-box">
+<div class="appointment-main" id="reportApptMain">Booked for Apr
+17, 2026 · 11:00 AM</div>
+<div class="appointment-sub" id="reportApptSub">Recommended every
+6 weeks · To maintain her teddy face and prevent tangling.</div>
+<div class="cta-row">
+<a class="cta primary" href="javascript:void(0)">Book again</a>
+<a class="cta secondary" href="javascript:void(0)">Contact
+salon</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="report-section reveal" id="feedbackSection">
+<div class="passport-card">
+<div class="passport-head">
+<h3>Thank you</h3>
+<p>We appreciate your feedback and support.</p>
+</div>
+<div class="passport-body">
+<div class="speech-bubble" id="reportThankYou">
+Thank you for trusting us with Mochi today.
+</div>
+<div style="height:14px"></div>
+<div id="reportCustomNote" class="helper" style="font-size:0.9rem;
+line-height:1.65; color:var(\--text-soft);"></div>
+<div class="stars" aria-label="5-star rating UI">
+<div class="star">★</div>
+<div class="star">★</div>
+<div class="star">★</div>
+<div class="star">★</div>
+<div class="star">★</div>
+</div>
+<div class="cta-row">
+<a class="cta primary" href="javascript:void(0)">Leave
+feedback</a>
+<a class="cta secondary" href="javascript:void(0)">WhatsApp
+us</a>
+</div>
+</div>
+</div>
+</section>
+<div class="footer-card reveal">
+<div class="footer-meta">
+<div>
+<strong id="footerSalon">Pawsport --- Tanjong Pagar</strong><br>
+Premium grooming care with warmth, trust, and a little playfulness.
+<div class="stamp">Powered by Pawsport</div>
+</div>
+<div style="display:flex; gap:12px; align-items:flex-start;">
+<div class="qr-box" aria-label="Mock QR code"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+<div class="actionbar">
+<div class="actionbar-inner">
+<div class="action-left">
+<button class="btn btn-secondary" id="saveDraftBtn">Save
+Draft</button>
+<button class="btn btn-soft" id="previewReportBtn">Preview
+Report</button>
+<button class="btn btn-primary" id="generateBtn">Generate
+Pawsport</button>
+</div>
+<div class="action-right">
+<div class="link-box"
+id="shareLinkBox">https://pawsport.app/report/mochi-20260320-demo</div>
+<button class="btn btn-secondary" id="copyLinkBtn">Copy Share
+Link</button>
+<button class="btn btn-whatsapp" id="whatsappBtn">WhatsApp
+Share</button>
+</div>
+</div>
+</div>
+<div class="toast" id="toast">Saved</div>
+</div>
+<script>
+const \$ = (id) => document.getElementById(id);
+const fallbackImages = {
+pet:
+"https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=700&q=80",
+before:
+"https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=700&q=80",
+after:
+"https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=700&q=80",
+extra:
+"https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80"
+};
+const historyVisits = [
+{
+id: "visit-2026-03-20",
+label: "20 Mar 2026",
+sublabel: "Full Teddy Spa Groom",
+status: "Shared",
+shareLink: "https://pawsport.app/report/mochi-20260320-demo",
+data: {
+petName: "Mochi",
+breed: "Mini Goldendoodle",
+gender: "Female",
+age: "3 years old",
+weight: "8.2 kg",
+ownerName: "Melissa Tan",
+ownerContact: "+65 9123 4567",
+ownerEmail: "melissa@example.com",
+branch: "Pawsport --- Tanjong Pagar",
+groomerName: "Chloe",
+dateTime: "2026-03-20T10:30",
+packageName: "Full Teddy Spa Groom",
+coatType: "Soft curly coat",
+groomingStyle: "Teddy trim",
+furLength: "Short face, fluffy legs",
+duration: "2 hr 15 min",
+addons: "Blueberry facial, paw balm",
+productsUsed: "Sensitive oat shampoo, detangling mist",
+specialNotes: "Owner requested a softer teddy face and shorter hygiene
+trim for easier upkeep at home.",
+behaviorTags: ["Calm", "Friendly", "Cooperative"],
+groomerNotes: "Mochi was very sweet today and settled in quickly. She
+stood nicely for scissoring and was especially comfortable during
+brushing and blow drying with gentle reassurance.",
+handlingDifficulty: "Easy",
+dryingTolerance: "Good",
+clipperTolerance: "Good",
+conditions: {
+ear: { status: "Good", note: "Clean with mild wax build-up removed."
+},
+eye: { status: "Monitor", note: "Slight tear staining around inner
+corners." },
+skin: { status: "Good", note: "Skin looked healthy and comfortable."
+},
+coat: { status: "Monitor", note: "A few light tangles on legs and
+chest." },
+nails: { status: "Good", note: "Trimmed and filed neatly." },
+teeth: { status: "Monitor", note: "Mild tartar visible; routine
+brushing recommended." },
+flea: { status: "Good", note: "No visible fleas or ticks observed."
+},
+remarks: { status: "Good", note: "Overall session went smoothly." }
+},
+apptStatus: "Booked",
+apptDate: "2026-04-17T11:00",
+frequency: "6 weeks",
+rebookNote: "To maintain her teddy face and prevent tangling.",
+thankYouMessage: "Thank you for trusting us with Mochi today. She was
+an absolute sweetheart and we loved spending time with her. We hope you
+enjoy her fresh new look and cannot wait to see her again soon.",
+customNote: "Mochi would benefit from regular brushing at home around
+the legs and chest to keep her coat soft and knot-free between
+visits.",
+feedbackEnabled: true,
+extraImageEnabled: true,
+serviceTags: ["Bath", "Full Groom", "Nail Trim", "Ear
+Cleaning"],
+images: {
+pet: fallbackImages.pet,
+before: fallbackImages.before,
+after: fallbackImages.after,
+extra: fallbackImages.extra
+}
+}
+},
+{
+id: "visit-2026-02-03",
+label: "03 Feb 2026",
+sublabel: "Bath + Trim",
+status: "Shared",
+shareLink: "https://pawsport.app/report/mochi-20260203-demo",
+data: {
+petName: "Mochi",
+breed: "Mini Goldendoodle",
+gender: "Female",
+age: "2 years 11 months",
+weight: "8.0 kg",
+ownerName: "Melissa Tan",
+ownerContact: "+65 9123 4567",
+ownerEmail: "melissa@example.com",
+branch: "Pawsport --- Tanjong Pagar",
+groomerName: "Ava",
+dateTime: "2026-02-03T14:00",
+packageName: "Bath + Tidy Trim",
+coatType: "Soft wavy coat",
+groomingStyle: "Face tidy + hygiene trim",
+furLength: "Medium fluffy finish",
+duration: "1 hr 40 min",
+addons: "Paw balm",
+productsUsed: "Hydrating shampoo, conditioning spray",
+specialNotes: "Owner wanted a light tidy-up only this round.",
+behaviorTags: ["Friendly", "Playful"],
+groomerNotes: "Mochi was cheerful and playful today. She needed a
+little extra reassurance during drying but remained lovely
+throughout.",
+handlingDifficulty: "Easy",
+dryingTolerance: "Moderate",
+clipperTolerance: "Good",
+conditions: {
+ear: { status: "Good", note: "Clean overall." },
+eye: { status: "Good", note: "Minimal staining." },
+skin: { status: "Good", note: "No irritation observed." },
+coat: { status: "Monitor", note: "Slight tangling around rear legs."
+},
+nails: { status: "Good", note: "Trimmed." },
+teeth: { status: "Monitor", note: "Mild breath noticed." },
+flea: { status: "Good", note: "No flea/tick signs." },
+remarks: { status: "Good", note: "Happy visit overall." }
+},
+apptStatus: "Booked",
+apptDate: "2026-03-20T10:30",
+frequency: "6 weeks",
+rebookNote: "Ideal timing before coat gets too fluffy around the
+legs.",
+thankYouMessage: "Thanks for bringing Mochi in today. She was bright
+and happy and looked adorable after her tidy-up.",
+customNote: "A quick brush every few days would help keep her leg fur
+neat between appointments.",
+feedbackEnabled: true,
+extraImageEnabled: false,
+serviceTags: ["Bath", "Nail Trim", "Ear Cleaning", "Sanitary
+Trim"],
+images: {
+pet: fallbackImages.pet,
+before: fallbackImages.before,
+after: fallbackImages.after,
+extra: fallbackImages.extra
+}
+}
+},
+{
+id: "visit-2026-01-06",
+label: "06 Jan 2026",
+sublabel: "Puppy Intro Groom",
+status: "Ready",
+shareLink: "https://pawsport.app/report/mochi-20260106-demo",
+data: {
+petName: "Mochi",
+breed: "Mini Goldendoodle",
+gender: "Female",
+age: "2 years 10 months",
+weight: "7.9 kg",
+ownerName: "Melissa Tan",
+ownerContact: "+65 9123 4567",
+ownerEmail: "melissa@example.com",
+branch: "Pawsport --- Tanjong Pagar",
+groomerName: "Chloe",
+dateTime: "2026-01-06T09:30",
+packageName: "Intro Comfort Groom",
+coatType: "Puppy-soft wavy coat",
+groomingStyle: "Comfort trim",
+furLength: "Light tidy finish",
+duration: "1 hr 20 min",
+addons: "Treat break",
+productsUsed: "Gentle puppy shampoo",
+specialNotes: "Introductory session focused on comfort and
+familiarity.",
+behaviorTags: ["Nervous", "Friendly"],
+groomerNotes: "Mochi was a little unsure at first, but warmed up nicely
+with praise and short breaks. A very promising first session.",
+handlingDifficulty: "Moderate",
+dryingTolerance: "Moderate",
+clipperTolerance: "Moderate",
+conditions: {
+ear: { status: "Good", note: "Ears looked healthy." },
+eye: { status: "Monitor", note: "Very mild staining." },
+skin: { status: "Good", note: "Healthy skin." },
+coat: { status: "Good", note: "Soft coat with no major matting." },
+nails: { status: "Monitor", note: "Slight hesitation during nail
+trim." },
+teeth: { status: "Good", note: "Clean for age." },
+flea: { status: "Good", note: "No issues seen." },
+remarks: { status: "Good", note: "Good first grooming introduction."
+}
+},
+apptStatus: "Booked",
+apptDate: "2026-02-03T14:00",
+frequency: "4 weeks",
+rebookNote: "Helpful to build confidence with regular short
+sessions.",
+thankYouMessage: "Thank you for letting us meet Mochi today. She did so
+well for her intro session and we are excited to watch her grow more
+confident each visit.",
+customNote: "Short, positive grooming visits can really help build
+familiarity and trust over time.",
+feedbackEnabled: false,
+extraImageEnabled: false,
+serviceTags: ["Bath", "Nail Trim", "Ear Cleaning"],
+images: {
+pet: fallbackImages.pet,
+before: fallbackImages.before,
+after: fallbackImages.after,
+extra: fallbackImages.extra
+}
+}
+}
+];
+const state = {
+mode: "edit",
+status: "Draft",
+extraImageEnabled: true,
+feedbackEnabled: true,
+shareLink: "https://pawsport.app/report/mochi-20260320-demo",
+currentHistoryId: null,
+currentViewLabel: "Current Draft",
+isLoadingHistory: false
+};
+function formatDateTime(value) {
+if (!value) return "Date pending";
+const d = new Date(value);
+if (isNaN(d)) return value;
+return d.toLocaleString("en-SG", {
+month: "short",
+day: "numeric",
+year: "numeric",
+hour: "numeric",
+minute: "2-digit"
+});
+}
+function formatAppointment(value) {
+if (!value) return "Appointment pending";
+const d = new Date(value);
+if (isNaN(d)) return value;
+return d.toLocaleString("en-SG", {
+month: "short",
+day: "numeric",
+year: "numeric",
+hour: "numeric",
+minute: "2-digit"
+});
+}
+function toast(message) {
+const el = \$("toast");
+el.textContent = message;
+el.classList.add("show");
+clearTimeout(el._timer);
+el._timer = setTimeout(() => el.classList.remove("show"), 2200);
+}
+function updateStatus(status) {
+state.status = status;
+const pill = \$("statusPill");
+pill.className = "pill";
+if (status === "Draft") pill.classList.add("status-draft");
+if (status === "Ready") pill.classList.add("status-ready");
+if (status === "Shared") pill.classList.add("status-shared");
+pill.textContent = "● " + status;
+}
+function getActiveChipText(containerId) {
+return [\...document.querySelectorAll(\`#\${containerId}
+.chip.active\`)].map(el => el.textContent.trim());
+}
+function setImagePreview(inputId, previewId, reportTargetId, imageKey) {
+const input = \$(inputId);
+const preview = \$(previewId);
+const reportImg = \$(reportTargetId);
+input.addEventListener("change", () => {
+const file = input.files?.[0];
+if (!file) return;
+const url = URL.createObjectURL(file);
+preview.src = url;
+preview.style.display = "block";
+reportImg.src = url;
+reportImg.dataset.src = url;
+markAsCurrentDraft();
+updateStatus("Draft");
+updateReport();
+});
+}
+function makeSwitch(toggleId, onChange) {
+const el = \$(toggleId);
+el.addEventListener("click", () => {
+el.classList.toggle("active");
+onChange(el.classList.contains("active"));
+});
+}
+function setSwitch(toggleId, active) {
+const el = \$(toggleId);
+el.classList.toggle("active", !!active);
+}
+function setChipGroup(containerId, activeValues) {
+const activeSet = new Set(activeValues \|\| []);
+document.querySelectorAll(\`#\${containerId} .chip\`).forEach(chip => {
+chip.classList.toggle("active",
+activeSet.has(chip.textContent.trim()));
+});
+}
+function setCondition(key, status, note) {
+const statusEl =
+document.querySelector(\`.condition-status[data-key="\${key}"]\`);
+const noteEl =
+document.querySelector(\`.condition-note[data-key="\${key}"]\`);
+if (statusEl) statusEl.value = status \|\| "Good";
+if (noteEl) noteEl.value = note \|\| "";
+}
+function getCondition(key) {
+const statusEl =
+document.querySelector(\`.condition-status[data-key="\${key}"]\`);
+const noteEl =
+document.querySelector(\`.condition-note[data-key="\${key}"]\`);
+return {
+status: statusEl ? statusEl.value : "Good",
+note: noteEl ? noteEl.value : ""
+};
+}
+function setPreviewLabel(label) {
+state.currentViewLabel = label;
+\$("previewContextLabel").textContent = label;
+}
+function markAsCurrentDraft() {
+if (state.isLoadingHistory) return;
+state.currentHistoryId = null;
+setPreviewLabel("Current Draft");
+highlightHistorySelection();
+}
+function highlightHistorySelection() {
+document.querySelectorAll(".history-item").forEach(item => {
+item.classList.toggle("active", item.dataset.id ===
+state.currentHistoryId);
+});
+}
+function renderHistoryList() {
+const list = \$("visitHistoryList");
+list.innerHTML = "";
+historyVisits.forEach(visit => {
+const item = document.createElement("button");
+item.type = "button";
+item.className = "history-item";
+item.dataset.id = visit.id;
+item.innerHTML = \`
+<div>
+<strong>\${visit.label}</strong>
+<small>\${visit.sublabel}</small>
+</div>
+<div>\${visit.status}</div>
+\`;
+item.addEventListener("click", () => loadHistoryVisit(visit.id));
+list.appendChild(item);
+});
+highlightHistorySelection();
+}
+function applyImageToUI(previewId, reportId, src) {
+const preview = \$(previewId);
+const report = \$(reportId);
+const imageSrc = src \|\| "";
+report.src = imageSrc \|\| fallbackImages.pet;
+report.dataset.src = imageSrc \|\| "";
+if (imageSrc) {
+preview.src = imageSrc;
+preview.style.display = "block";
+} else {
+preview.removeAttribute("src");
+preview.style.display = "none";
+}
+}
+function loadHistoryVisit(id) {
+const visit = historyVisits.find(v => v.id === id);
+if (!visit) return;
+state.isLoadingHistory = true;
+state.currentHistoryId = id;
+const d = visit.data;
+\$("petName").value = d.petName \|\| "";
+\$("breed").value = d.breed \|\| "";
+\$("gender").value = d.gender \|\| "Female";
+\$("age").value = d.age \|\| "";
+\$("weight").value = d.weight \|\| "";
+\$("ownerName").value = d.ownerName \|\| "";
+\$("ownerContact").value = d.ownerContact \|\| "";
+\$("ownerEmail").value = d.ownerEmail \|\| "";
+\$("branch").value = d.branch \|\| "";
+\$("groomerName").value = d.groomerName \|\| "";
+\$("dateTime").value = d.dateTime \|\| "";
+\$("packageName").value = d.packageName \|\| "";
+\$("coatType").value = d.coatType \|\| "";
+\$("groomingStyle").value = d.groomingStyle \|\| "";
+\$("furLength").value = d.furLength \|\| "";
+\$("duration").value = d.duration \|\| "";
+\$("addons").value = d.addons \|\| "";
+\$("productsUsed").value = d.productsUsed \|\| "";
+\$("specialNotes").value = d.specialNotes \|\| "";
+\$("groomerNotes").value = d.groomerNotes \|\| "";
+\$("handlingDifficulty").value = d.handlingDifficulty \|\| "Easy";
+\$("dryingTolerance").value = d.dryingTolerance \|\| "";
+\$("clipperTolerance").value = d.clipperTolerance \|\| "";
+\$("apptStatus").value = d.apptStatus \|\| "Booked";
+\$("apptDate").value = d.apptDate \|\| "";
+\$("frequency").value = d.frequency \|\| "6 weeks";
+\$("rebookNote").value = d.rebookNote \|\| "";
+\$("thankYouMessage").value = d.thankYouMessage \|\| "";
+\$("customNote").value = d.customNote \|\| "";
+setChipGroup("serviceChips", d.serviceTags \|\| []);
+setChipGroup("behaviorChips", d.behaviorTags \|\| []);
+const conditions = d.conditions \|\| {};
+setCondition("ear", conditions.ear?.status, conditions.ear?.note);
+setCondition("eye", conditions.eye?.status, conditions.eye?.note);
+setCondition("skin", conditions.skin?.status, conditions.skin?.note);
+setCondition("coat", conditions.coat?.status, conditions.coat?.note);
+setCondition("nails", conditions.nails?.status,
+conditions.nails?.note);
+setCondition("teeth", conditions.teeth?.status,
+conditions.teeth?.note);
+setCondition("flea", conditions.flea?.status, conditions.flea?.note);
+setCondition("remarks", conditions.remarks?.status,
+conditions.remarks?.note);
+state.extraImageEnabled = !!d.extraImageEnabled;
+state.feedbackEnabled = !!d.feedbackEnabled;
+setSwitch("extraToggle", state.extraImageEnabled);
+setSwitch("feedbackToggle", state.feedbackEnabled);
+applyImageToUI("petPhotoPreview", "reportPetPhoto", d.images?.pet
+\|\| fallbackImages.pet);
+applyImageToUI("beforePreview", "reportBeforeImg", d.images?.before
+\|\| fallbackImages.before);
+applyImageToUI("afterPreview", "reportAfterImg", d.images?.after
+\|\| fallbackImages.after);
+applyImageToUI("extraPreview", "reportExtraImg", d.images?.extra
+\|\| fallbackImages.extra);
+state.shareLink = visit.shareLink \|\| "";
+\$("shareLinkBox").textContent = state.shareLink \|\| "No share
+link";
+updateStatus(visit.status \|\| "Ready");
+setPreviewLabel(\`Viewing \${visit.label}\`);
+highlightHistorySelection();
+updateReport();
+state.isLoadingHistory = false;
+toast(\`Loaded Pawsport from \${visit.label}\`);
+}
+function collectCurrentFormData() {
+return {
+petName: \$("petName").value \|\| "",
+breed: \$("breed").value \|\| "",
+gender: \$("gender").value \|\| "",
+age: \$("age").value \|\| "",
+weight: \$("weight").value \|\| "",
+ownerName: \$("ownerName").value \|\| "",
+ownerContact: \$("ownerContact").value \|\| "",
+ownerEmail: \$("ownerEmail").value \|\| "",
+branch: \$("branch").value \|\| "",
+groomerName: \$("groomerName").value \|\| "",
+dateTime: \$("dateTime").value \|\| "",
+packageName: \$("packageName").value \|\| "",
+coatType: \$("coatType").value \|\| "",
+groomingStyle: \$("groomingStyle").value \|\| "",
+furLength: \$("furLength").value \|\| "",
+duration: \$("duration").value \|\| "",
+addons: \$("addons").value \|\| "",
+productsUsed: \$("productsUsed").value \|\| "",
+specialNotes: \$("specialNotes").value \|\| "",
+behaviorTags: getActiveChipText("behaviorChips"),
+groomerNotes: \$("groomerNotes").value \|\| "",
+handlingDifficulty: \$("handlingDifficulty").value \|\| "",
+dryingTolerance: \$("dryingTolerance").value \|\| "",
+clipperTolerance: \$("clipperTolerance").value \|\| "",
+conditions: {
+ear: getCondition("ear"),
+eye: getCondition("eye"),
+skin: getCondition("skin"),
+coat: getCondition("coat"),
+nails: getCondition("nails"),
+teeth: getCondition("teeth"),
+flea: getCondition("flea"),
+remarks: getCondition("remarks")
+},
+apptStatus: \$("apptStatus").value \|\| "",
+apptDate: \$("apptDate").value \|\| "",
+frequency: \$("frequency").value \|\| "",
+rebookNote: \$("rebookNote").value \|\| "",
+thankYouMessage: \$("thankYouMessage").value \|\| "",
+customNote: \$("customNote").value \|\| "",
+feedbackEnabled: state.feedbackEnabled,
+extraImageEnabled: state.extraImageEnabled,
+serviceTags: getActiveChipText("serviceChips"),
+images: {
+pet: \$("reportPetPhoto").dataset.src \|\| \$("reportPetPhoto").src
+\|\| "",
+before: \$("reportBeforeImg").dataset.src \|\|
+\$("reportBeforeImg").src \|\| "",
+after: \$("reportAfterImg").dataset.src \|\|
+\$("reportAfterImg").src \|\| "",
+extra: \$("reportExtraImg").dataset.src \|\|
+\$("reportExtraImg").src \|\| ""
+}
+};
+}
+function updateReport() {
+const petName = \$("petName").value \|\| "Pet";
+const breed = \$("breed").value \|\| "Breed";
+const groomerName = \$("groomerName").value \|\| "Groomer";
+const branch = \$("branch").value \|\| "Branch";
+const dateTime = \$("dateTime").value;
+const packageName = \$("packageName").value \|\| "Grooming Package";
+const groomerNotes = \$("groomerNotes").value \|\| "";
+const thankYou = \$("thankYouMessage").value \|\| "";
+const customNote = \$("customNote").value \|\| "";
+const apptStatus = \$("apptStatus").value;
+const apptDate = \$("apptDate").value;
+const frequency = \$("frequency").value;
+const rebookNote = \$("rebookNote").value \|\| "";
+\$("reportPetName").textContent = petName;
+\$("reportBreed").textContent = breed;
+\$("reportGroomer").textContent = \`by \${groomerName}\`;
+\$("reportBranch").textContent = branch;
+\$("reportDateLine").textContent = formatDateTime(dateTime);
+\$("reportPackage").textContent = packageName;
+\$("reportByTag").textContent = \`by \${groomerName}\`;
+\$("reportGroomerNote").textContent = groomerNotes;
+\$("reportThankYou").textContent = thankYou;
+\$("reportCustomNote").textContent = customNote;
+\$("footerSalon").textContent = branch;
+const serviceWrap = \$("reportServices");
+serviceWrap.innerHTML = "";
+getActiveChipText("serviceChips").forEach(text => {
+const span = document.createElement("span");
+span.className = "service-chip";
+span.textContent = text;
+serviceWrap.appendChild(span);
+});
+const behaviorWrap = \$("reportBehavior");
+behaviorWrap.innerHTML = "";
+getActiveChipText("behaviorChips").forEach(text => {
+const span = document.createElement("span");
+span.className = "behavior-chip";
+span.textContent = text;
+behaviorWrap.appendChild(span);
+});
+const conditions = [
+["Ear", "ear"],
+["Eye", "eye"],
+["Skin", "skin"],
+["Coat", "coat"],
+["Nails", "nails"],
+["Teeth", "teeth"]
+];
+const list = \$("reportConditions");
+list.innerHTML = "";
+conditions.forEach(([label, key]) => {
+const statusEl =
+document.querySelector(\`.condition-status[data-key="\${key}"]\`);
+const noteEl =
+document.querySelector(\`.condition-note[data-key="\${key}"]\`);
+const status = statusEl ? statusEl.value : "Good";
+const note = noteEl ? noteEl.value : "";
+const row = document.createElement("div");
+row.className = "condition-row";
+const badgeClass =
+status === "Good" ? "good" :
+status === "Monitor" ? "monitor" : "issue";
+row.innerHTML = \`
+<strong>\${label}</strong>
+<span class="badge \${badgeClass}">\${status}</span>
+<span style="color: var(\--text-soft);
+line-height:1.6;">\${note}</span>
+\`;
+list.appendChild(row);
+});
+if (apptStatus === "Booked") {
+\$("reportApptMain").textContent = \`Booked for
+\${formatAppointment(apptDate)}\`;
+\$("reportApptSub").textContent = \`Recommended every \${frequency} ·
+\${rebookNote}\`;
+} else {
+\$("reportApptMain").textContent = "No appointment booked yet";
+\$("reportApptSub").textContent = \`Recommended every \${frequency} ·
+\${rebookNote}\`;
+}
+\$("extraGalleryCard").style.display = state.extraImageEnabled ?
+"block" : "none";
+\$("feedbackSection").style.display = state.feedbackEnabled ?
+"block" : "none";
+}
+function setMode(mode) {
+state.mode = mode;
+const editActive = mode === "edit";
+\$("editModeBtn").classList.toggle("active", editActive);
+\$("previewModeBtn").classList.toggle("active", !editActive);
+\$("dashboardPane").style.display = editActive ? "grid" : "none";
+\$("previewShell").style.gridColumn = editActive ? "" : "1 / -1";
+if (!editActive) {
+window.scrollTo({ top: 0, behavior: "smooth" });
+}
+}
+function toggleChipGroups() {
+document.querySelectorAll(".chips .chip").forEach(chip => {
+chip.addEventListener("click", () => {
+chip.classList.toggle("active");
+markAsCurrentDraft();
+updateStatus("Draft");
+updateReport();
+});
+});
+}
+function bindInputs() {
+document.querySelectorAll("input, textarea, select").forEach(el => {
+el.addEventListener("input", () => {
+markAsCurrentDraft();
+updateStatus("Draft");
+updateReport();
+});
+el.addEventListener("change", () => {
+markAsCurrentDraft();
+updateStatus("Draft");
+updateReport();
+});
+});
+}
+function revealOnScroll() {
+const items = document.querySelectorAll(".reveal");
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) entry.target.classList.add("show");
+});
+}, { threshold: 0.12 });
+items.forEach(item => observer.observe(item));
+}
+function initSidebarJumps() {
+document.querySelectorAll(".tab-btn").forEach(btn => {
+btn.addEventListener("click", () => {
+document.querySelectorAll(".tab-btn").forEach(x =>
+x.classList.remove("active"));
+btn.classList.add("active");
+const target = document.querySelector(btn.dataset.jump);
+target?.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+});
+}
+function saveCurrentDraftToHistory() {
+const currentData = collectCurrentFormData();
+const petName = currentData.petName \|\| "pet";
+const dateValue = currentData.dateTime \|\| new
+Date().toISOString().slice(0,16);
+const dateObj = new Date(dateValue);
+const label = isNaN(dateObj)
+? "Draft Session"
+: dateObj.toLocaleDateString("en-SG", { day: "2-digit", month:
+"short", year: "numeric" });
+const slug = petName.toLowerCase().replace(/\\s+/g, "-");
+const shortDate = (currentData.dateTime \|\|
+"2026-03-20").replace(/[:T]/g, "").slice(0, 8);
+const id =
+\`visit-\${shortDate}-\${Math.random().toString(36).slice(2,7)}\`;
+const shareLink =
+\`https://pawsport.app/report/\${slug}-\${shortDate}-demo\`;
+const newVisit = {
+id,
+label,
+sublabel: currentData.packageName \|\| "Grooming Session",
+status: "Ready",
+shareLink,
+data: currentData
+};
+historyVisits.unshift(newVisit);
+state.currentHistoryId = id;
+state.shareLink = shareLink;
+\$("shareLinkBox").textContent = shareLink;
+renderHistoryList();
+setPreviewLabel(\`Viewing \${label}\`);
+toast("Saved to visit history");
+}
+function initActions() {
+\$("editModeBtn").addEventListener("click", () =>
+setMode("edit"));
+\$("previewModeBtn").addEventListener("click", () =>
+setMode("preview"));
+\$("previewReportBtn").addEventListener("click", () =>
+setMode("preview"));
+\$("saveDraftBtn").addEventListener("click", () => {
+markAsCurrentDraft();
+updateStatus("Draft");
+toast("Draft saved");
+});
+\$("generateBtn").addEventListener("click", () => {
+updateStatus("Ready");
+saveCurrentDraftToHistory();
+setMode("preview");
+});
+\$("copyLinkBtn").addEventListener("click", async () => {
+try {
+await navigator.clipboard.writeText(state.shareLink);
+updateStatus("Shared");
+toast("Share link copied");
+} catch {
+toast("Copy failed on this browser");
+}
+});
+\$("whatsappBtn").addEventListener("click", () => {
+updateStatus("Shared");
+toast("WhatsApp share opened");
+});
+\$("duplicateBtn").addEventListener("click", () => {
+if (state.currentHistoryId) {
+const visit = historyVisits.find(v => v.id === state.currentHistoryId);
+if (visit) {
+const clone = JSON.parse(JSON.stringify(visit.data));
+state.currentHistoryId = null;
+setPreviewLabel("Current Draft");
+loadDataIntoFormOnly(clone);
+updateStatus("Draft");
+updateReport();
+toast("Historic visit duplicated into current draft");
+}
+} else {
+toast("Open a historic visit first");
+}
+});
+\$("reportSentBtn").addEventListener("click", () => {
+updateStatus("Shared");
+toast("Report sent confirmation");
+});
+}
+function loadDataIntoFormOnly(d) {
+state.isLoadingHistory = true;
+\$("petName").value = d.petName \|\| "";
+\$("breed").value = d.breed \|\| "";
+\$("gender").value = d.gender \|\| "Female";
+\$("age").value = d.age \|\| "";
+\$("weight").value = d.weight \|\| "";
+\$("ownerName").value = d.ownerName \|\| "";
+\$("ownerContact").value = d.ownerContact \|\| "";
+\$("ownerEmail").value = d.ownerEmail \|\| "";
+\$("branch").value = d.branch \|\| "";
+\$("groomerName").value = d.groomerName \|\| "";
+\$("dateTime").value = d.dateTime \|\| "";
+\$("packageName").value = d.packageName \|\| "";
+\$("coatType").value = d.coatType \|\| "";
+\$("groomingStyle").value = d.groomingStyle \|\| "";
+\$("furLength").value = d.furLength \|\| "";
+\$("duration").value = d.duration \|\| "";
+\$("addons").value = d.addons \|\| "";
+\$("productsUsed").value = d.productsUsed \|\| "";
+\$("specialNotes").value = d.specialNotes \|\| "";
+\$("groomerNotes").value = d.groomerNotes \|\| "";
+\$("handlingDifficulty").value = d.handlingDifficulty \|\| "Easy";
+\$("dryingTolerance").value = d.dryingTolerance \|\| "";
+\$("clipperTolerance").value = d.clipperTolerance \|\| "";
+\$("apptStatus").value = d.apptStatus \|\| "Booked";
+\$("apptDate").value = d.apptDate \|\| "";
+\$("frequency").value = d.frequency \|\| "6 weeks";
+\$("rebookNote").value = d.rebookNote \|\| "";
+\$("thankYouMessage").value = d.thankYouMessage \|\| "";
+\$("customNote").value = d.customNote \|\| "";
+setChipGroup("serviceChips", d.serviceTags \|\| []);
+setChipGroup("behaviorChips", d.behaviorTags \|\| []);
+const conditions = d.conditions \|\| {};
+setCondition("ear", conditions.ear?.status, conditions.ear?.note);
+setCondition("eye", conditions.eye?.status, conditions.eye?.note);
+setCondition("skin", conditions.skin?.status, conditions.skin?.note);
+setCondition("coat", conditions.coat?.status, conditions.coat?.note);
+setCondition("nails", conditions.nails?.status,
+conditions.nails?.note);
+setCondition("teeth", conditions.teeth?.status,
+conditions.teeth?.note);
+setCondition("flea", conditions.flea?.status, conditions.flea?.note);
+setCondition("remarks", conditions.remarks?.status,
+conditions.remarks?.note);
+state.extraImageEnabled = !!d.extraImageEnabled;
+state.feedbackEnabled = !!d.feedbackEnabled;
+setSwitch("extraToggle", state.extraImageEnabled);
+setSwitch("feedbackToggle", state.feedbackEnabled);
+applyImageToUI("petPhotoPreview", "reportPetPhoto", d.images?.pet
+\|\| fallbackImages.pet);
+applyImageToUI("beforePreview", "reportBeforeImg", d.images?.before
+\|\| fallbackImages.before);
+applyImageToUI("afterPreview", "reportAfterImg", d.images?.after
+\|\| fallbackImages.after);
+applyImageToUI("extraPreview", "reportExtraImg", d.images?.extra
+\|\| fallbackImages.extra);
+state.isLoadingHistory = false;
+}
+setImagePreview("petPhoto", "petPhotoPreview", "reportPetPhoto",
+"pet");
+setImagePreview("beforePhoto", "beforePreview", "reportBeforeImg",
+"before");
+setImagePreview("afterPhoto", "afterPreview", "reportAfterImg",
+"after");
+setImagePreview("extraPhoto", "extraPreview", "reportExtraImg",
+"extra");
+makeSwitch("extraToggle", (isActive) => {
+state.extraImageEnabled = isActive;
+markAsCurrentDraft();
+updateStatus("Draft");
+updateReport();
+});
+makeSwitch("feedbackToggle", (isActive) => {
+state.feedbackEnabled = isActive;
+markAsCurrentDraft();
+updateStatus("Draft");
+updateReport();
+});
+toggleChipGroups();
+bindInputs();
+initSidebarJumps();
+initActions();
+revealOnScroll();
+renderHistoryList();
+updateStatus("Draft");
+updateReport();
+</script>
+</body>
+</html>
